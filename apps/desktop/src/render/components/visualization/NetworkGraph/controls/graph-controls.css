@@ -1,0 +1,41 @@
+/**
+ * Graph Controls Fullscreen Styles
+ *
+ * Proper CSS for fullscreen mode to maintain backgrounds
+ */
+
+/* Ensure fullscreen elements maintain proper background */
+:fullscreen {
+  background-color: var(--background, white) !important;
+}
+
+/* Webkit browsers (Safari, older Chrome) */
+:-webkit-full-screen {
+  background-color: var(--background, white) !important;
+}
+
+/* Firefox */
+:-moz-full-screen {
+  background-color: var(--background, white) !important;
+}
+
+/* Edge/IE */
+:-ms-fullscreen {
+  background-color: var(--background, white) !important;
+}
+
+/* Ensure the graph container maintains its background in fullscreen */
+.sigma-container:fullscreen,
+.sigma-container:-webkit-full-screen,
+.sigma-container:-moz-full-screen,
+.sigma-container:-ms-fullscreen {
+  background-color: inherit;
+}
+
+/* Dark mode support */
+.dark :fullscreen,
+.dark :-webkit-full-screen,
+.dark :-moz-full-screen,
+.dark :-ms-fullscreen {
+  background-color: var(--background, #0a0a0a) !important;
+}

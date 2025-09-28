@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": ["src/**/*", "drizzle/**/*"],
+  "exclude": ["node_modules", "dist", "test.js"]
+}

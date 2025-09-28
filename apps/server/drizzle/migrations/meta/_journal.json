@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1758191404873,
+      "tag": "0000_curly_klaw",
+      "breakpoints": true
+    }
+  ]
+}

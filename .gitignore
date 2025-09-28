@@ -1,0 +1,134 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+**/dist/
+**/build/
+**/out/
+*.mjs
+vite.config.*.mjs
+
+# Logs
+*.log
+*.logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+electron.log
+electron-debug.log
+test-output.log
+
+# OS files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+.env.web
+.env.electron
+.env.backup
+# Keep example files
+!.env.example
+!.env.*.example
+
+# Testing
+coverage/
+.nyc_output/
+**/coverage/
+**/.nyc_output/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+cbdb_sql_db/
+
+# Archives
+*.7z
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Monorepo specific
+.turbo/
+.nx/
+
+# Package manager files
+.npm/
+.yarn/
+.pnpm-store/
+
+# Misc
+*.pid
+*.seed
+*.pid.lock
+.eslintcache
+.cache/
+.parcel-cache/
+*.backup
+*.bak
+*.tmp
+*.temp
+storybook-static/
+settings.local.json
+
+# Claude project memory (individual file)
+CLAUDE.md
+
+# MCP configuration
+.mcp.json
+
+# Private documentation
+docs-private/
+
+# Claude/AI tools folders
+.claude/
+.playwright-mcp/
+.cline/
+.mcp.json
+
+# Reference materials
+references/
+**/references/
+
+# Test databases
+test-empty-*.db

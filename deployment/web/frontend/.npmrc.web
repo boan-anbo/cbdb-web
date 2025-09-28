@@ -1,0 +1,3 @@
+# Skip electron-builder install-app-deps for web builds
+ELECTRON_BUILDER_SKIP_INSTALL_APP_DEPS=true
+electron-builder-install-app-deps=false

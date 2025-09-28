@@ -1,0 +1,60 @@
+{
+  "name": "cbdb-desktop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "China Biographical Database Desktop Application",
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev:server",
+    "dev:server": "cd apps/server && npm run start:dev",
+    "dev:desktop": "echo 'Desktop app not configured yet'",
+    "build": "npm run build:server",
+    "build:server": "cd apps/server && npm run build",
+    "build:desktop": "echo 'Desktop app not configured yet'",
+    "test": "npm run test:server",
+    "test:server": "cd apps/server && npm test",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "api:generate": "cd libs/api-client && npm run generate",
+    "api:clean": "cd libs/api-client && npm run clean"
+  },
+  "devDependencies": {
+    "@libsql/client": "0.15.15",
+    "@nestjs/cli": "11.0.10",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "drizzle-orm": "0.44.5",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.4",
+    "shadcn": "3.3.1",
+    "tsdown": "0.15.4",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/swagger": "^11.2.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "react": "^19.0.0",
+    "reflect-metadata": "^0.2.2",
+    "tsx": "4.20.5"
+  },
+  "main": ".eslintrc.js",
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "type": "commonjs"
+}

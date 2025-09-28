@@ -1,0 +1,256 @@
+/**
+ * Viewport-Constrained Scrolling System
+ * ======================================
+ *
+ * SOLUTION: Page-Level scrollbar-gutter for Layout Stability
+ * ===========================================================
+ *
+ * After testing multiple approaches from the article:
+ * https://dev.to/rashidshamloo/preventing-the-layout-shift-caused-by-scrollbars-2flp
+ *
+ * We found the optimal solution: Apply `scrollbar-gutter: stable` to the
+ * .cbdb-page class, NOT to the main container.
+ *
+ * THE PROBLEM WE SOLVED:
+ * ----------------------
+ * 1. Layout shift when scrollbar appears/disappears (content jumps 15px)
+ * 2. Data inspector had gap from viewport edge when gutter was on main
+ * 3. Need to prevent shifts without permanent scrollbar ugliness
+ *
+ * OUR SOLUTION:
+ * ------------
+ * 1. Main container: Uses `overflow-y: auto` (no gutter)
+ * 2. Page content (.cbdb-page): Uses `scrollbar-gutter: stable`
+ * 3. Result: Pages prevent shift, inspector extends to edge
+ *
+ * WHY THIS WORKS:
+ * --------------
+ * - Main container is SHARED between page content and data inspector
+ * - Adding gutter to main affects BOTH (causing inspector gap)
+ * - Adding gutter to .cbdb-page affects ONLY page content
+ * - Inspector can use full width to viewport edge
+ *
+ * ARCHITECTURE:
+ * ------------
+ * viewport (100vw)
+ * └── body (locked to viewport)
+ *     └── sidebar + sidebar-inset (flex)
+ *         └── main container (overflow-y: auto, NO gutter)
+ *             ├── page content (.cbdb-page with gutter) ← Prevents shift
+ *             └── data inspector (no gutter) ← Extends to edge
+ *
+ * IMPORTANT FOR DEVELOPERS:
+ * ========================
+ * Always wrap page content in a div with class="cbdb-page" to get:
+ * - Automatic layout shift prevention via scrollbar-gutter
+ * - Proper width constraints
+ * - Correct overflow handling
+ *
+ * Example:
+ * <div className="cbdb-page">
+ *   <!-- Your page content here -->
+ * </div>
+ *
+ * This ensures ALL pages have consistent, shift-free scrolling.
+ */
+
+/* Root layout setup with fixed viewport dimensions */
+:root {
+  /* Calculate viewport dimensions accounting for scrollbar */
+  --viewport-width: 100vw;
+  --viewport-height: 100vh;
+
+  /* Use dynamic viewport units on supported browsers */
+  --viewport-width-dynamic: 100dvw;
+  --viewport-height-dynamic: 100dvh;
+}
+
+/* Apply fixed dimensions to html and body */
+html {
+  /* Prevent horizontal overflow at the document level */
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  /* Lock body to viewport dimensions */
+  width: var(--viewport-width);
+  height: var(--viewport-height);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Root app container should fill the viewport exactly */
+#root, .app-root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Main layout container (contains sidebar + main content) */
+.main-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sidebar inset should have defined dimensions */
+.sidebar-inset {
+  flex: 1;
+  min-width: 0; /* Critical: allows flex child to shrink below content width */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Data inspector layout container */
+.data-inspector-layout {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Flex column container for header and main */
+.flex.h-full.flex-col {
+  height: 100%; /* Take full height from parent */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Fixed header */
+header {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  overflow: hidden;
+}
+
+/* Scroll container wrapper - takes remaining height */
+div.flex-1.min-h-0.relative {
+  flex: 1 1 0%; /* Grow to take remaining space */
+  min-height: 0; /* Allow shrinking */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Main content area that can scroll vertically */
+main {
+  height: 100%; /* Fill parent's precise height */
+  overflow-x: hidden;
+  overflow-y: auto; /* Auto scrollbar when needed */
+  position: relative;
+}
+
+/* CBDB containers need proper constraints */
+.cbdb-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  /* Allow content to grow vertically */
+  min-height: 100%;
+}
+
+
+.cbdb-block {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden; /* Block level shouldn't overflow */
+}
+
+.cbdb-block-content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+/* Table-specific container for horizontal scrolling */
+.cbdb-block-content[data-overflow="true"],
+.cbdb-block-content.overflow-x-auto {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  /* Add subtle scroll indicators */
+  background: linear-gradient(90deg,
+    var(--background) 0%,
+    transparent 2%,
+    transparent 98%,
+    var(--background) 100%);
+}
+
+/* Ensure tables maintain their minimum width but container can scroll */
+.cbdb-block-content table {
+  min-width: max-content; /* Table maintains its natural width */
+}
+
+/* ResizablePanel specific fixes */
+[data-panel] {
+  min-width: 0;
+  min-height: 0; /* Allow panel to shrink vertically */
+  height: 100%; /* Take full height of parent */
+  overflow: hidden;
+}
+
+/* ResizablePanelGroup needs proper height */
+[data-panel-group] {
+  height: 100%; /* Take parent's height, not viewport */
+  overflow: hidden;
+}
+
+/* Ensure the first panel (main content) in ResizablePanelGroup can handle flex layout */
+[data-panel]:first-child {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height */
+  overflow: hidden;
+}
+
+/* The inner flex container needs full height */
+[data-panel]:first-child > .flex.h-full.flex-col {
+  height: 100%; /* Not 100vh, but 100% of parent */
+}
+
+/* Utility classes for containing overflow */
+.contain-overflow {
+  overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.allow-horizontal-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Smooth scrollbar styling */
+.allow-horizontal-scroll::-webkit-scrollbar,
+.cbdb-block-content[data-overflow="true"]::-webkit-scrollbar {
+  height: 8px;
+}
+
+.allow-horizontal-scroll::-webkit-scrollbar-track,
+.cbdb-block-content[data-overflow="true"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.allow-horizontal-scroll::-webkit-scrollbar-thumb,
+.cbdb-block-content[data-overflow="true"]::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: var(--radius);
+}
+
+.allow-horizontal-scroll::-webkit-scrollbar-thumb:hover,
+.cbdb-block-content[data-overflow="true"]::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+}

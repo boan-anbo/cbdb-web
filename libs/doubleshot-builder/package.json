@@ -1,0 +1,65 @@
+{
+  "name": "@doubleshot/builder",
+  "version": "0.0.15",
+  "author": "ArcherGu (https://github.com/ArcherGu/)",
+  "license": "MIT",
+  "homepage": "https://github.com/archergu/doubleshot/tree/main/packages/builder#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archergu/doubleshot.git",
+    "directory": "packages/builder"
+  },
+  "bugs": {
+    "url": "https://github.com/archergu/doubleshot/issues"
+  },
+  "keywords": [
+    "bundle",
+    "builder",
+    "electron",
+    "nestjs",
+    "esbuild"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "doubleshot-build": "dist/cli.js",
+    "dsb": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "tsup && vitest run"
+  },
+  "peerDependencies": {
+    "electron": ">=16.0.0",
+    "electron-builder": ">=20.0.0"
+  },
+  "peerDependenciesMeta": {
+    "electron": {
+      "optional": true
+    },
+    "electron-builder": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "bundle-require": "^5.1.0",
+    "cac": "^6.7.14",
+    "check-package-exists": "^1.1.6",
+    "colorette": "^2.0.20",
+    "joycon": "^3.1.1",
+    "resolve-from": "^5.0.0",
+    "tsup": "^8.5.0",
+    "wait-on": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/wait-on": "5.3.4",
+    "electron": "38.1.2",
+    "electron-builder": "26.0.12"
+  }
+}

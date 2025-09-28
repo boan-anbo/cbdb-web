@@ -1,0 +1,50 @@
+@layer base {
+  :root {
+    /* Inherit from app theme or use defaults */
+    --dt-background: var(--background, 0 0% 100%);
+    --dt-foreground: var(--foreground, 240 10% 3.9%);
+    --dt-card: var(--card, 0 0% 100%);
+    --dt-card-foreground: var(--card-foreground, 240 10% 3.9%);
+    --dt-popover: var(--popover, 0 0% 100%);
+    --dt-popover-foreground: var(--popover-foreground, 240 10% 3.9%);
+    --dt-primary: var(--primary, 240 5.9% 10%);
+    --dt-primary-foreground: var(--primary-foreground, 0 0% 98%);
+    --dt-secondary: var(--secondary, 240 4.8% 95.9%);
+    --dt-secondary-foreground: var(--secondary-foreground, 240 5.9% 10%);
+    --dt-muted: var(--muted, 240 4.8% 95.9%);
+    --dt-muted-foreground: var(--muted-foreground, 240 3.8% 46.1%);
+    --dt-accent: var(--accent, 240 4.8% 95.9%);
+    --dt-accent-foreground: var(--accent-foreground, 240 5.9% 10%);
+    --dt-destructive: var(--destructive, 0 84.2% 60.2%);
+    --dt-destructive-foreground: var(--destructive-foreground, 0 0% 98%);
+    --dt-border: var(--border, 240 5.9% 90%);
+    --dt-input: var(--input, 240 5.9% 90%);
+    --dt-ring: var(--ring, 240 5.9% 10%);
+
+    /* Data table specific */
+    --dt-row-hover: 240 4.8% 95.9%;
+    --dt-row-selected: 240 5.9% 90%;
+    --dt-row-selected-hover: 240 5.9% 85%;
+
+    /* Spacing system */
+    --dt-spacing-xs: 0.25rem;
+    --dt-spacing-sm: 0.5rem;
+    --dt-spacing-md: 0.75rem;
+    --dt-spacing-lg: 1rem;
+    --dt-spacing-xl: 1.5rem;
+
+    /* Density-based cell padding */
+    --dt-cell-padding-compact: var(--dt-spacing-xs) var(--dt-spacing-sm);
+    --dt-cell-padding-normal: var(--dt-spacing-sm) var(--dt-spacing-md);
+    --dt-cell-padding-comfortable: var(--dt-spacing-md) var(--dt-spacing-lg);
+
+    /* Borders */
+    --dt-radius: var(--radius, 0.375rem);
+  }
+
+  .dark {
+    --dt-row-hover: 240 3.7% 15.9%;
+    --dt-row-selected: 240 3.7% 20%;
+    --dt-row-selected-hover: 240 3.7% 25%;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "declaration": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.html"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "@cbdb/core",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "GPL-3.0-or-later",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run typecheck && npm run bundle",
+    "bundle": "tsdown",
+    "dev": "tsdown --watch",
+    "watch": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.0",
+    "typescript": "5.3.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.60.0",
+    "@tanstack/react-query-devtools": "^5.60.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "class-transformer": "^0.5.0",
+    "class-validator": "^0.14.0",
+    "drizzle-orm": "^0.44.0",
+    "react": ">=19.0.0",
+    "zod": "^3.0.0"
+  }
+}

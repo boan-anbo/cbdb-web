@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist",
+    "references",
+    "**/*spec.ts",
+    "**/*.bench.ts",
+    "**/*-model.bench.ts",
+    "*.config.ts",
+    "vitest.config.ts",
+    "drizzle.*.ts",
+    "**/*.electron.ts",
+    "**/window/**"
+  ]
+}

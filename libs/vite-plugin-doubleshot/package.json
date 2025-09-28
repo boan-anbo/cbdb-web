@@ -1,0 +1,53 @@
+{
+  "name": "vite-plugin-doubleshot",
+  "version": "0.0.19",
+  "description": "Doubleshot Builder for Vite",
+  "author": "ArcherGu (https://github.com/ArcherGu/)",
+  "license": "MIT",
+  "homepage": "https://github.com/archergu/doubleshot/tree/main/packages/plugin-vite#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archergu/doubleshot.git",
+    "directory": "packages/plugin-vite"
+  },
+  "bugs": {
+    "url": "https://github.com/archergu/doubleshot/issues"
+  },
+  "keywords": [
+    "vite",
+    "builder",
+    "electron",
+    "nestjs",
+    "esbuild",
+    "doubleshot"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "tsup && vitest run"
+  },
+  "peerDependencies": {
+    "vite": ">=2.0.0"
+  },
+  "dependencies": {
+    "@doubleshot/builder": "*"
+  },
+  "devDependencies": {
+    "vite": "7.1.6"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "CBDB Desktop",
+  "short_name": "CBDB-D",
+  "description": "China Biographical Database Desktop Application",
+  "start_url": "/cbdb/",
+  "display": "standalone",
+  "theme_color": "#1e293b",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/cbdb/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/cbdb/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/cbdb/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

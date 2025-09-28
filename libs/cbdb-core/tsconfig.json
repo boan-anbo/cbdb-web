@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM"],
+    "paths": {
+      "@/*": ["src/*"],
+      "@domains/*": ["src/domains/*"]
+    }
+  },
+  "include": ["src/**/*", "test/**/*", "vitest.config.ts", "tsdown.config.ts"],
+  "exclude": ["node_modules", "dist", "src/hooks/**/*"]
+}

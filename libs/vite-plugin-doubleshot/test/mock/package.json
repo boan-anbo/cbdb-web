@@ -1,0 +1,21 @@
+{
+  "name": "doubleshot-vite-plugin-test",
+  "version": "0.0.0",
+  "private": true,
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "26.0.12",
+    "vite": "^7.1.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
+  }
+}

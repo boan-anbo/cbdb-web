@@ -1,0 +1,730 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/users": {
+      "post": {
+        "operationId": "UsersController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "summary": "Create a new user",
+        "tags": [
+          "users"
+        ]
+      },
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns all users"
+          }
+        },
+        "summary": "Get all users",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Get a user by id",
+        "tags": [
+          "users"
+        ]
+      },
+      "patch": {
+        "operationId": "UsersController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Update a user",
+        "tags": [
+          "users"
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Delete a user",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/app-settings": {
+      "get": {
+        "operationId": "AppSettingsController_getSettings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns app settings"
+          }
+        },
+        "summary": "Get app settings",
+        "tags": [
+          "app-settings"
+        ]
+      },
+      "put": {
+        "operationId": "AppSettingsController_updateSettings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Settings updated successfully"
+          }
+        },
+        "summary": "Update app settings",
+        "tags": [
+          "app-settings"
+        ]
+      }
+    },
+    "/app-settings/cbdb-path": {
+      "put": {
+        "operationId": "AppSettingsController_setLastUsedCbdbPath",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "CBDB path updated"
+          }
+        },
+        "summary": "Set last used CBDB path",
+        "tags": [
+          "app-settings"
+        ]
+      }
+    },
+    "/app-settings/recent-files": {
+      "get": {
+        "operationId": "AppSettingsController_getRecentFiles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns recent files list"
+          }
+        },
+        "summary": "Get recent CBDB files",
+        "tags": [
+          "app-settings"
+        ]
+      },
+      "post": {
+        "operationId": "AppSettingsController_addRecentFile",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "File added to recent files"
+          }
+        },
+        "summary": "Add a recent file",
+        "tags": [
+          "app-settings"
+        ]
+      }
+    },
+    "/app-settings/search-history": {
+      "get": {
+        "operationId": "AppSettingsController_getSearchHistory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns search history"
+          }
+        },
+        "summary": "Get search history",
+        "tags": [
+          "app-settings"
+        ]
+      },
+      "post": {
+        "operationId": "AppSettingsController_addSearchHistory",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Search added to history"
+          }
+        },
+        "summary": "Add search history entry",
+        "tags": [
+          "app-settings"
+        ]
+      }
+    },
+    "/api/people/search": {
+      "get": {
+        "description": "Search for people by Chinese or English name with optional exact/fuzzy matching",
+        "operationId": "PersonController_searchByName",
+        "parameters": [
+          {
+            "name": "name",
+            "required": true,
+            "in": "query",
+            "description": "Name to search for (Chinese or English)",
+            "schema": {
+              "example": "王安石",
+              "type": "string"
+            }
+          },
+          {
+            "name": "accurate",
+            "required": false,
+            "in": "query",
+            "description": "Whether to search for exact match (true) or partial match (false)",
+            "schema": {
+              "default": false,
+              "example": false,
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "start",
+            "required": false,
+            "in": "query",
+            "description": "Starting position (0-based)",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "example": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return",
+            "schema": {
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "example": 100,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results returned successfully"
+          }
+        },
+        "summary": "Search people by name",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/detail": {
+      "get": {
+        "description": "Retrieve complete information about a person including biographical data, relationships, offices, addresses, texts, etc. Similar to Harvard CBDB API.",
+        "operationId": "PersonController_getPersonDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": false,
+            "in": "query",
+            "description": "Person ID (e.g., 1762 for Wang Anshi)",
+            "schema": {
+              "example": 1762,
+              "type": "number"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Person name in Chinese or Pinyin (e.g., 王安石 or Wang Anshi)",
+            "schema": {
+              "example": "王安石",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Person details found"
+          },
+          "400": {
+            "description": "Either id or name must be provided"
+          },
+          "404": {
+            "description": "Person not found"
+          }
+        },
+        "summary": "Get comprehensive person details",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/{id}/full": {
+      "get": {
+        "description": "Retrieve complete information about a person including all relations (kinship, addresses, offices, etc.)",
+        "operationId": "PersonController_getPersonFull",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "example": 1762,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Person with all relations found"
+          },
+          "404": {
+            "description": "Person not found"
+          }
+        },
+        "summary": "Get person with all relations",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/{id}": {
+      "get": {
+        "description": "Retrieve a person by ID. Use include query parameter to specify which relations to include.",
+        "operationId": "PersonController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "example": 1762,
+              "type": "number"
+            }
+          },
+          {
+            "name": "include",
+            "required": false,
+            "in": "query",
+            "description": "Comma-separated list of relations to include (kinship,addresses,offices,entries,statuses,associations,texts,events) or \"all\" for all relations",
+            "schema": {
+              "example": "kinship,addresses",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Person found"
+          },
+          "404": {
+            "description": "Person not found"
+          }
+        },
+        "summary": "Get person by ID with optional relations",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/dynasty/search": {
+      "get": {
+        "description": "Search for people who lived during a specific dynasty",
+        "operationId": "PersonController_searchByDynasty",
+        "parameters": [
+          {
+            "name": "dynastyCode",
+            "required": true,
+            "in": "query",
+            "description": "Dynasty code to search for",
+            "schema": {
+              "example": 15,
+              "type": "number"
+            }
+          },
+          {
+            "name": "start",
+            "required": false,
+            "in": "query",
+            "description": "Starting position (0-based)",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return",
+            "schema": {
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results returned successfully"
+          }
+        },
+        "summary": "Search people by dynasty",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/year-range/search": {
+      "get": {
+        "description": "Search for people whose index year falls within the specified range",
+        "operationId": "PersonController_searchByYearRange",
+        "parameters": [
+          {
+            "name": "startYear",
+            "required": true,
+            "in": "query",
+            "description": "Start year of the range",
+            "schema": {
+              "example": 960,
+              "type": "number"
+            }
+          },
+          {
+            "name": "endYear",
+            "required": true,
+            "in": "query",
+            "description": "End year of the range",
+            "schema": {
+              "example": 1279,
+              "type": "number"
+            }
+          },
+          {
+            "name": "start",
+            "required": false,
+            "in": "query",
+            "description": "Starting position (0-based)",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return",
+            "schema": {
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results returned successfully"
+          }
+        },
+        "summary": "Search people by year range",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/advanced-search": {
+      "post": {
+        "description": "Search for people using multiple filter criteria",
+        "operationId": "PersonController_advancedSearch",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdvancedSearchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results returned successfully"
+          }
+        },
+        "summary": "Advanced people search",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/batch": {
+      "post": {
+        "description": "Retrieve multiple people by providing an array of IDs",
+        "operationId": "PersonController_findByIds",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "People found"
+          }
+        },
+        "summary": "Get multiple people by IDs",
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/people/{id}/relations/stats": {
+      "get": {
+        "description": "Retrieve statistics about a person's relations (counts and IDs only, no full data)",
+        "operationId": "PersonController_getPersonRelationStats",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "example": 1762,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Person with relation statistics"
+          },
+          "404": {
+            "description": "Person not found"
+          }
+        },
+        "summary": "Get person relation statistics",
+        "tags": [
+          "People"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "CBDB Desktop API",
+    "description": "The CBDB Desktop API with Drizzle ORM",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "api",
+      "description": ""
+    },
+    {
+      "name": "People",
+      "description": "Operations related to biographical data"
+    },
+    {
+      "name": "Users",
+      "description": "User management operations"
+    },
+    {
+      "name": "Settings",
+      "description": "Application settings"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The email of the user"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "The name of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "The password of the user",
+            "minimum": 6
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "password"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The email of the user"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "The name of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "The password of the user",
+            "minimum": 6
+          }
+        }
+      },
+      "AdvancedSearchDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name to search for (Chinese or English)",
+            "example": "蘇"
+          },
+          "dynastyCode": {
+            "type": "number",
+            "description": "Dynasty code to filter by",
+            "example": 15
+          },
+          "startYear": {
+            "type": "number",
+            "description": "Start year for index year filter",
+            "example": 960
+          },
+          "endYear": {
+            "type": "number",
+            "description": "End year for index year filter",
+            "example": 1279
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender filter",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male"
+          },
+          "start": {
+            "type": "number",
+            "description": "Starting position (0-based)",
+            "default": 0,
+            "minimum": 0
+          },
+          "limit": {
+            "type": "number",
+            "description": "Number of results to return",
+            "default": 100,
+            "minimum": 1,
+            "maximum": 1000
+          }
+        }
+      }
+    }
+  }
+}

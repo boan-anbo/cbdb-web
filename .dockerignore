@@ -1,0 +1,50 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Development files
+.git/
+.github/
+.vscode/
+.idea/
+*.log
+*.swp
+.DS_Store
+
+# Test files
+coverage/
+.nyc_output/
+
+# Documentation
+docs/
+*.md
+
+# Environment files
+.env
+.env.*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Desktop app specific (not needed for web)
+apps/desktop/dist/
+apps/desktop/node_modules/
+
+# Server build output (will be rebuilt)
+apps/server/dist/
+apps/server/node_modules/
+
+# Library build output (will be rebuilt)
+libs/*/dist/
+libs/*/node_modules/
+
+# Keep the CBDB database
+!cbdb_sql_db/latest.db

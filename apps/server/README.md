@@ -1,0 +1,478 @@
+# NestJS Application with Drizzle ORM and Vitest
+
+A modern NestJS application configured with:
+- **OpenAPI/Swagger** documentation
+- **Drizzle ORM** with SQLite/libsql support
+- **Dual database architecture** (App DB + User CBDB)
+- **Vitest** for testing
+- **Class Validator** for DTO validation
+
+## Features
+
+- ✅ Latest NestJS version
+- ✅ Swagger/OpenAPI documentation at `/api`
+- ✅ Drizzle ORM with SQLite/libsql support
+- ✅ Dual database support:
+  - App database (`cbdb-desktop.db`) for application state/settings
+  - User's CBDB database (path provided at runtime)
+- ✅ Vitest testing framework
+- ✅ Example Users CRUD module
+- ✅ Environment configuration
+- ✅ TypeScript support
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment:**
+   - Copy `.env.example` to `.env`
+   - The app will create `cbdb-desktop.db` automatically
+   - CBDB path will be set dynamically when user opens a CBDB file
+
+3. **Initialize app database:**
+   ```bash
+   npm run db:generate
+   npm run db:push
+   ```
+
+## Development
+
+Start the development server:
+```bash
+npm run start:dev
+```
+
+The application will be available at:
+- API: http://localhost:3000
+- Swagger Documentation: http://localhost:3000/api
+
+## Testing
+
+Run tests with Vitest:
+```bash
+# Run all tests
+npm run test
+
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:cov
+
+# UI mode
+npm run test:ui
+```
+
+## Project Structure
+
+```
+src/
+├── app.module.ts           # Main application module
+├── main.ts                 # Application entry point with Swagger setup
+├── db/                     # Database configuration
+│   ├── db.module.ts       # Database module
+│   └── schema/            # Drizzle schema definitions
+│       ├── index.ts
+│       └── users.ts       # Users table schema
+└── users/                  # Users module (example)
+    ├── dto/               # Data Transfer Objects
+    ├── users.controller.ts # REST API endpoints
+    ├── users.service.ts   # Business logic
+    └── users.module.ts    # Module definition
+```
+
+## System Architecture
+
+### Architectural Layers
+
+Our system follows a strict layered architecture with clear data type boundaries:
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   Client                            │
+├─────────────────────────────────────────────────────┤
+│              Controller Layer                        │
+│                  (DTOs only)                        │
+├─────────────────────────────────────────────────────┤
+│               Service Layer                         │
+│              (Messages only)                        │
+├─────────────────────────────────────────────────────┤
+│              Repository Layer                       │
+│           (Schemas → Models)                        │
+├─────────────────────────────────────────────────────┤
+│              Database Layer                         │
+│            (Raw Schemas only)                       │
+└─────────────────────────────────────────────────────┘
+```
+
+### Layer Responsibilities & Data Types
+
+| Layer | Responsibility | Data Types | Access Pattern |
+|-------|---------------|------------|----------------|
+| **Database** | Data Storage | Raw Schemas | SQL only |
+| **Repository** | Data Access & Mapping | Schemas + Models | Converts Schemas → Models |
+| **Service** | Business Logic | Messages (all types) | Processes Messages → Messages |
+| **Controller** | HTTP Handling | DTOs only | DTOs → Service → DTOs |
+| **Client** | User Interface | TypeScript types | JSON communication |
+
+### Messages - The Universal Service Language
+
+**Messages** encompass ALL data structures that flow through the service layer:
+
+```
+Messages
+├── Models (Database Entities)
+│   ├── TableModel    - Raw table representation
+│   ├── Model         - Entity with denormalized data (DEFAULT)
+│   └── ExtendedModel - Entity with all relations
+├── CQRS (Service Operations)
+│   ├── Queries       - Read requests
+│   ├── Commands      - Action requests
+│   ├── Results       - Operation responses
+│   └── Events        - Domain events
+├── DataViews (Compositions)
+│   └── Purpose-specific data shapes
+└── DTOs (Controller Layer Only)
+    ├── Requests      - HTTP input
+    └── Responses     - HTTP output
+```
+
+## Data Modeling Architecture
+
+### Design Principles
+
+1. **Explicitness** - Every data transformation is explicit and traceable
+2. **Layered Architecture** - Clear separation of concerns across layers
+3. **Composition over Inheritance** - Using composition patterns for flexibility
+4. **Modularity** - Each layer can be independently tested and composed
+5. **Type Safety** - Full TypeScript typing at every layer
+
+### Data Hierarchy
+
+#### 1. Schema Layer
+**Purpose**: Raw database schema definitions
+**Location**: `@cbdb/core/schemas/`
+**Characteristics**:
+- Direct database table representations
+- Generated by Drizzle from SQLite schema
+- Interfaces only (TypeScript compile-time)
+- Used ONLY by Repository layer
+
+#### 2. TableModel Layer
+**Purpose**: Runtime representation of database tables
+**Location**: `@cbdb/core/domains/*/models/*.model.table.ts`
+**Contract**:
+- 1:1 mapping to database tables
+- NO joins or relations
+- Constructor-based classes for runtime metadata
+- Used for raw data operations
+
+#### 3. Model Layer (DEFAULT)
+**Purpose**: Business entities with denormalized lookup data
+**Location**: `@cbdb/core/domains/*/models/*.model.ts`
+**Contract**:
+- TableModel + trivial joins (code tables)
+- Human-readable values from lookup tables
+- The intuitive default for developers
+- Example: `PersonModel` includes dynasty names from DYNASTIES table
+
+#### 4. ExtendedModel Layer
+**Purpose**: Complete entities with all relations
+**Location**: `@cbdb/core/domains/*/models/*.model.extended.ts`
+**Contract**:
+- Model + entity relations
+- Uses composition pattern (not inheritance)
+- Relations are ALWAYS arrays (never undefined)
+- Example: `PersonFullExtendedModel` with `person` and `fullRelations` properties
+
+#### 5. DataView Layer
+**Purpose**: Purpose-specific data compositions
+**Location**: `@cbdb/core/domains/*/views/*.data-view.ts`
+**Contract**:
+- Tailored for specific UI/analytics needs
+- Stable, named compositions
+- Can combine multiple models
+- Example: `PersonTimelineDataView`, `PersonNetworkDataView`
+
+#### 6. DTO Layer
+**Purpose**: HTTP/API contracts
+**Location**: `@cbdb/core/domains/*/messages/*.dtos.ts`
+**Contract**:
+- Request/Response structures
+- API-specific metadata
+- Validation decorators
+- Thin wrappers around CQRS messages
+
+### Data Flow
+
+```
+Database → Schema → TableModel → Model → ExtendedModel → DataView → DTO → Client
+             ↑          ↑           ↑          ↑            ↑         ↑
+        Repository  Repository  Repository  Service    Service  Controller
+```
+
+### Layer Contracts
+
+| Layer | Access | Responsibility | Example |
+|-------|--------|---------------|---------|
+| Schema | Repository only | Database structure | `BIOG_MAIN` interface |
+| TableModel | Repository | Raw data | `PersonTableModel` class |
+| Model | Repository/Service | Business entity | `PersonModel` class |
+| ExtendedModel | Service | Complete relations | `PersonFullExtendedModel` class |
+| DataView | Service | UI/Analytics | `PersonTimelineDataView` class |
+| DTO | Controller | HTTP contract | `PersonResponse` class |
+
+### Composition Example
+
+```typescript
+// PersonFullExtendedModel uses composition, not inheritance
+export class PersonFullExtendedModel {
+  public person: PersonModel;           // Core entity
+  public fullRelations: PersonFullRelations;  // All relations
+
+  constructor(person: PersonModel, relations: PersonFullRelations) {
+    this.person = person;
+    this.fullRelations = relations;
+  }
+}
+```
+
+### Testing Strategy
+
+Each layer can be independently tested:
+- **TableModel**: Test mapping from database
+- **Model**: Test denormalization logic
+- **ExtendedModel**: Test relation loading
+- **DataView**: Test composition logic
+- **DTO**: Test validation rules
+
+## Naming Conventions
+
+### Models
+- **TableModel**: `[Domain]TableModel` (e.g., `PersonTableModel`)
+- **Model**: `[Domain]Model` (e.g., `PersonModel`) - THE DEFAULT
+- **ExtendedModel**: `[Domain]ExtendedModel` or `[Domain]FullExtendedModel`
+- **DataView**: `[Domain][Purpose]DataView` (e.g., `PersonTimelineDataView`)
+
+### Messages (Service Layer)
+- **Query**: `[Domain][Action]Query` (e.g., `PersonSearchQuery`)
+- **Command**: `[Domain][Action]Command` (e.g., `ExportDataCommand`)
+- **Result**: `[Domain][Action]Result` (e.g., `PersonSearchResult`)
+- **Event**: `[Domain][Action]Event` (e.g., `PersonCreatedEvent`)
+
+### DTOs (Controller Layer)
+- **Request**: `[Action][Domain]Request` (e.g., `SearchPersonRequest`)
+- **Response**: `[Domain][Action]Response` (e.g., `PersonSearchResponse`)
+
+## Key Architectural Rules
+
+### Layer Isolation
+1. **Controllers** handle DTOs only - NEVER touch Schemas or raw Models
+2. **Services** process Messages only - NEVER access Schemas directly
+3. **Repositories** are the ONLY layer that accesses Schemas
+4. **Database** layer only knows raw Schemas
+
+### Data Type Boundaries
+- **Schemas**: Stay in Repository only
+- **Models**: Flow from Repository → Service → Controller
+- **Messages**: Live in Service layer
+- **DTOs**: Exist ONLY in Controller layer
+
+### Critical Patterns
+1. **Model is the DEFAULT** - What developers expect when fetching data
+2. **Composition over Inheritance** - ExtendedModels use composition
+3. **Arrays for Relations** - Always return `[]` for empty, never `undefined`
+4. **Explicit Transformations** - Every data transformation is traceable
+
+## Database Architecture
+
+### App Database (`cbdb-desktop.db`)
+Stores application state, settings, and user preferences.
+Example Users table with the following fields:
+- `id` (integer, primary key, auto-increment)
+- `email` (text, unique)
+- `name` (text)
+- `password` (text)
+- `isActive` (boolean, default: true)
+- `createdAt` (text, timestamp)
+- `updatedAt` (text, timestamp)
+
+### CBDB Database
+User's China Biographical Database file loaded at runtime.
+The path is provided dynamically when the user opens a CBDB file.
+
+## API Endpoints
+
+### Users
+- `POST /users` - Create a new user
+- `GET /users` - Get all users
+- `GET /users/:id` - Get user by ID
+- `PATCH /users/:id` - Update user
+- `DELETE /users/:id` - Delete user
+
+## Scripts
+
+- `npm run build` - Build the application
+- `npm run start` - Start the application
+- `npm run start:dev` - Start in development mode with hot reload
+- `npm run start:prod` - Start production build
+- `npm run test` - Run tests with Vitest
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:cov` - Generate test coverage report
+- `npm run test:ui` - Open Vitest UI
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
+
+## Web Deployment Security Features
+
+### Overview
+This server includes built-in security features for safe web deployment, supporting both Electron desktop and web browser access patterns.
+
+### Rate Limiting (防止滥用)
+
+**Implementation**: `@nestjs/throttler` with custom guard
+
+**Configuration**:
+- **Limit**: 30 requests per minute per IP address
+- **Window**: 60 seconds rolling window
+- **Scope**: Per-IP (each user has independent quota)
+
+**Features**:
+- ✅ Independent rate limiting per IP address
+- ✅ Cloudflare support (reads CF-Connecting-IP header)
+- ✅ Proxy support (X-Forwarded-For, X-Real-IP)
+- ✅ Health check endpoints bypass rate limiting
+- ✅ Returns HTTP 429 when limit exceeded
+
+**Files**:
+- `src/app.module.ts` - ThrottlerModule configuration
+- `src/common/guards/custom-throttler.guard.ts` - Custom IP extraction logic
+
+### Deployment Mode Protection (端点访问控制)
+
+**Implementation**: Custom `WebDeploymentGuard`
+
+**Protected Endpoints in Web Mode**:
+- `/api/archive/*` - File system operations
+- `/api/app-settings/*` - Application settings
+
+**Deployment Modes**:
+- `electron` - Full access to all endpoints
+- `web` - Restricted access (no file operations)
+- `development` - Configurable via environment
+
+**Files**:
+- `src/common/guards/web-deployment.guard.ts` - Access control logic
+- `src/config/deployment.config.ts` - Mode detection and endpoint list
+
+### How It Works
+
+#### 1. Rate Limiting Flow
+```
+Request → CustomThrottlerGuard → Extract Real IP → Check Quota → Allow/Deny
+                ↓
+         Cloudflare: CF-Connecting-IP
+         Proxy: X-Forwarded-For
+         Direct: request.ip
+```
+
+#### 2. Deployment Protection Flow
+```
+Request → WebDeploymentGuard → Check Deployment Mode → Check Path → Allow/Deny
+                                      ↓
+                              Web Mode: Block sensitive
+                              Electron: Allow all
+```
+
+### Testing
+
+```bash
+# Test rate limiting (should see 429 after 30 requests)
+for i in {1..35}; do
+  curl -s -o /dev/null -w "Request $i: %{http_code}\n" http://localhost:18019/api/people/1762
+done
+
+# Test web mode restrictions
+DEPLOYMENT_MODE=web npm run start:dev
+curl http://localhost:18019/api/archive/status  # Returns 403
+curl http://localhost:18019/api/health          # Returns 200
+```
+
+### Configuration
+
+#### Environment Variables
+```bash
+# Deployment mode
+DEPLOYMENT_MODE=web|electron|development
+
+# Rate limiting (hardcoded, modify in app.module.ts if needed)
+# ttl: 60000 (1 minute)
+# limit: 30 (requests per minute)
+```
+
+#### Adding Protected Endpoints
+Edit `src/config/deployment.config.ts`:
+```typescript
+getRestrictedEndpoints(): string[] {
+  return [
+    '/api/archive',
+    '/api/app-settings',
+    // Add more endpoints here
+  ];
+}
+```
+
+### Security Considerations
+
+1. **Rate Limiting**:
+   - Prevents single user from overwhelming server
+   - Each IP has independent quota (no shared limits)
+   - Cloudflare-ready for production deployment
+
+2. **Endpoint Protection**:
+   - File system operations disabled in web mode
+   - Sensitive settings protected from web access
+   - Automatic detection based on runtime environment
+
+3. **Scalability**:
+   - SQLite WAL mode supports concurrent reads
+   - NestJS request isolation prevents cascade failures
+   - Suitable for small deployments (5-100 concurrent users)
+
+### Deployment Checklist
+
+- [ ] Set `DEPLOYMENT_MODE=web` in production
+- [ ] Configure Cloudflare or reverse proxy
+- [ ] Ensure proxy forwards real IP headers
+- [ ] Test rate limiting works as expected
+- [ ] Verify sensitive endpoints return 403
+- [ ] Monitor server logs for 429 responses
+
+### Troubleshooting
+
+**All requests return 429**:
+- Check if rate limit is too low
+- Verify IP extraction works correctly
+- Check for shared IP/NAT issues
+
+**Endpoints not blocked in web mode**:
+- Verify DEPLOYMENT_MODE environment variable
+- Check deployment.config.ts for endpoint list
+- Ensure guards are registered in app.module.ts
+
+**Rate limiting not working**:
+- Verify ThrottlerModule is imported
+- Check CustomThrottlerGuard is registered
+- Test with curl to isolate browser caching
+
+## Technologies
+
+- [NestJS](https://nestjs.com/) - Progressive Node.js framework
+- [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM
+- [SQLite/libsql](https://github.com/libsql/libsql) - Database engine
+- [Vitest](https://vitest.dev/) - Testing framework
+- [Swagger](https://swagger.io/) - API documentation
+- [@nestjs/throttler](https://github.com/nestjs/throttler) - Rate limiting

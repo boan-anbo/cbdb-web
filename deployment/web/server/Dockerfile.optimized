@@ -1,0 +1,78 @@
+# Multi-stage build for NestJS server with 7z extraction
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY apps/server/package*.json ./apps/server/
+COPY libs/cbdb-core/package*.json ./libs/cbdb-core/
+
+# Copy workspace configuration
+COPY .npmrc* ./
+COPY tsconfig*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY apps/server ./apps/server
+COPY libs/cbdb-core ./libs/cbdb-core
+
+# Build @cbdb/core first
+WORKDIR /app/libs/cbdb-core
+RUN npm run build
+
+# Build server (web-only, no Electron)
+WORKDIR /app/apps/server
+RUN npm run build:web
+
+# Production stage
+FROM node:20-alpine
+
+# Install better-sqlite3 dependencies AND 7zip
+RUN apk add --no-cache python3 make g++ p7zip
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY apps/server/package*.json ./apps/server/
+COPY libs/cbdb-core/package*.json ./libs/cbdb-core/
+
+# Install production dependencies only
+RUN npm ci --production
+
+# Copy built applications
+COPY --from=builder /app/apps/server/dist ./apps/server/dist
+COPY --from=builder /app/libs/cbdb-core/dist ./libs/cbdb-core/dist
+
+# Copy and extract CBDB database (7z -> db)
+COPY cbdb_sql_db/latest.7z /tmp/latest.7z
+RUN mkdir -p /app/cbdb_sql_db && \
+    7z x /tmp/latest.7z -o/app/cbdb_sql_db/ && \
+    rm /tmp/latest.7z && \
+    echo "Database extracted, size:" && \
+    ls -lh /app/cbdb_sql_db/
+
+# Create directory for app database
+RUN mkdir -p /app/data
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=18019
+ENV CBDB_PATH=/app/cbdb_sql_db/latest.db
+ENV APP_DB_PATH=/app/data/cbdb-desktop.db
+ENV API_PREFIX=api
+ENV ENABLE_SWAGGER=false
+ENV LOG_LEVEL=info
+
+# Expose port
+EXPOSE 18019
+
+# Set working directory to server
+WORKDIR /app/apps/server
+
+# Start the server
+CMD ["node", "dist/main"]

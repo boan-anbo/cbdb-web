@@ -1,0 +1,1 @@
+export { PersonRelationStatsDataView } from './person-relation-stats.data-view';

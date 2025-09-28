@@ -1,0 +1,36 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "@nestjs/swagger",
+                "message": "@nestjs/swagger cannot be imported in @cbdb/core as it causes runtime errors in the frontend. Remove all Swagger decorators from this shared library."
+              },
+              {
+                "name": "@nestjs/common",
+                "message": "@nestjs/common cannot be imported in @cbdb/core as it's a server-only dependency. This is a shared library used by both frontend and backend."
+              },
+              {
+                "name": "@nestjs/core",
+                "message": "@nestjs/core cannot be imported in @cbdb/core as it's a server-only dependency. This is a shared library used by both frontend and backend."
+              }
+            ],
+            "patterns": [
+              {
+                "group": ["@nestjs/*"],
+                "message": "NestJS packages cannot be imported in @cbdb/core as they are server-only dependencies. This is a shared library used by both frontend and backend."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

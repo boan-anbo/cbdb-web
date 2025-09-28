@@ -1,0 +1,52 @@
+services:
+  cbdb-backend:
+    build:
+      context: ../..
+      dockerfile: deployment/web/server/Dockerfile
+    container_name: cbdb-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=18019
+      - CBDB_PATH=/app/cbdb_sql_db/latest.db
+      - APP_DB_PATH=/app/data/cbdb-desktop.db
+      - API_PREFIX=api
+      - CORS_ORIGIN=http://cbdb-frontend
+      - ENABLE_SWAGGER=false
+      - LOG_LEVEL=info
+    volumes:
+      - cbdb-data:/app/data
+      - ../../cbdb_sql_db:/app/cbdb_sql_db:ro
+    networks:
+      - cbdb-network
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:18019/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  cbdb-frontend:
+    build:
+      context: ../..
+      dockerfile: deployment/web/frontend/Dockerfile
+    container_name: cbdb-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - cbdb-backend
+    networks:
+      - cbdb-network
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  cbdb-network:
+    driver: bridge
+
+volumes:
+  cbdb-data:
+    driver: local

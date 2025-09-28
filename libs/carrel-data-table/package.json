@@ -1,0 +1,66 @@
+{
+  "name": "@carrel/data-table",
+  "version": "0.1.0",
+  "description": "Carrel Data Table - A powerful, extensible data table library built on TanStack Table",
+  "author": "CBDB Desktop Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cbdb-project/carrel-data-table"
+  },
+  "keywords": [
+    "data-table",
+    "react-table",
+    "tanstack-table",
+    "datatable",
+    "grid",
+    "datagrid",
+    "react",
+    "typescript",
+    "ui-components"
+  ],
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@tanstack/table-core": "^8.20.0",
+    "@tanstack/react-table": "^8.20.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-links": "9.1.7",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.0",
+    "@testing-library/jest-dom": "^6.1.0",
+    "@types/react": "^19.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "jsdom": "^23.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}

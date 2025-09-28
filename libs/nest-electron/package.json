@@ -1,0 +1,45 @@
+{
+  "name": "@doubleshot/nest-electron",
+  "version": "0.2.9",
+  "description": "Electron module for nestjs",
+  "author": "ArcherGu (https://github.com/ArcherGu/)",
+  "license": "MIT",
+  "homepage": "https://github.com/archergu/doubleshot/tree/main/packages/nest-electron#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archergu/doubleshot.git",
+    "directory": "packages/nest-electron"
+  },
+  "bugs": {
+    "url": "https://github.com/archergu/doubleshot/issues"
+  },
+  "keywords": [
+    "electron",
+    "nestjs"
+  ],
+  "files": [
+    "dist",
+    "index.d.ts",
+    "index.js"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "test": "npm run build && vitest run"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=8.0.0",
+    "@nestjs/core": ">=8.0.0",
+    "@nestjs/microservices": ">=8.0.0",
+    "electron": ">=16.0.0",
+    "rxjs": ">=7.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "11.1.6",
+    "@nestjs/core": "11.1.6",
+    "@nestjs/microservices": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "axios": "^1.11.0",
+    "electron": "38.1.2",
+    "reflect-metadata": "0.2.2"
+  }
+}
