@@ -14,19 +14,31 @@ A new free and open-source interface for the China Biographical Database
 ![CBDB Desktop Person Relations Explorer Interface](apps/desktop/public/app-demo-screenshot.png)
 *CBDB Desktop & Web 2025.0520.0.1.0 - Demo Interface*
 
-## Attribution
+## Attribution & Licensing
 
-**China Biographical Database (CBDB)** is a project started by Robert M. Hartwell and Michael A. Fuller and is currently owned and maintained by teams at Harvard University, Academia Sinica, and Peking University. The CBDB data is licensed under CC BY-NC-SA 4.0.
+**China Biographical Database (CBDB)** is a project started by Robert M. Hartwell and Michael A. Fuller and is currently owned and maintained by teams at Harvard University, Academia Sinica, and Peking University.
+
+### CBDB Project Licensing
+
+- **CBDB Data**: Licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+- **CBDB Database Schema**: The database schema structure of CBDB remains under additional copyright protection
+- **Commercial Use in China**: An exclusive commercial license for CBDB in mainland China is in place (granted to ChineseAll.com since 2018). Learn more at [https://projects.iq.harvard.edu/cbdb/exclusive-commercial-license](https://projects.iq.harvard.edu/cbdb/exclusive-commercial-license)
+
+### CBDB Desktop & Web Licensing
+
+- **Software License**: CBDB Desktop & Web (this application) is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0)
+- **Source Code**: Available at [https://github.com/boan-anbo/cbdb-web](https://github.com/boan-anbo/cbdb-web)
+- **Important Note**: While CBDB Desktop & Web's data modeling and software are AGPL-3.0, the CBDB data itself remains under its separate licensing terms, and the data schema of the original CBDB database is additionally copyrighted and cannot be re-copyrighted
 
 This application includes the latest CBDB SQLite database (version 2025-05-20) from the [CBDB SQLite project](https://github.com/cbdb-project/cbdb_sqlite).
 
-Learn more: [https://projects.iq.harvard.edu/cbdb](https://projects.iq.harvard.edu/cbdb)
+Learn more about CBDB: [https://projects.iq.harvard.edu/cbdb](https://projects.iq.harvard.edu/cbdb)
 
 ---
 
 ## What is CBDB Desktop & Web?
 
-CBDB Desktop & Web is a free and open-source interface (AGPL-3.0 license for the software) built with web technology that provides new ways to use the China Biographical Database. CBDB Web is the same interface but a hosted version at [dh-tools.com/cbdb](https://dh-tools.com/cbdb).
+CBDB Desktop & Web is a free and open-source interface built with web technology that provides new ways to use the China Biographical Database (CBDB data is licensed under CC BY-NC-SA 4.0; CBDB schema is separately copyrighted). The software itself is licensed under AGPL-3.0. CBDB Web is the same interface but a hosted version at [dh-tools.com/cbdb](https://dh-tools.com/cbdb).
 
 ## Key Capabilities
 

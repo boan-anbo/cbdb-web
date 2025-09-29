@@ -23,7 +23,7 @@ export function TechStackArchitectureDetails() {
           technologies (React and Node.js have been around for over a decade)
           guarantee longevity unlike proprietary systems (e.g., Microsoft
           Access) facing extinction. The contract-driven and interface-based
-          architecture allows swapping implementations without breaking
+          architecture allows swapping implementations with minimal breaking
           changes—React can be replaced with Vue, NestJS with Express, Drizzle
           with Kysely, Electron with Tauri, all while contracts in @cbdb/core
           and other structural interfaces remain unchanged (though repository
@@ -40,8 +40,8 @@ export function TechStackArchitectureDetails() {
         <p className="text-sm leading-relaxed">
           In other words, CBDB Desktop & Web could be completely rewritten with
           a different technology stack in the future, as long as it uses web
-          technology, we can ensure the consistency of APIs and core repository
-          logic. This is our ultimate goal. Currently, some parts have reached
+          technology, we can ensure the consistency of APIs and core domain
+          logic. This is the ultimate goal of the project. Currently, some parts have reached
           this level of abstraction, but many have not, as this is still a
           technical demo.
         </p>

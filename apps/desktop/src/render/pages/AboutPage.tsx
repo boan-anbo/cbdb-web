@@ -94,8 +94,8 @@ const AboutPage: React.FC = () => {
           </CBDBBlockHeader>
           <CBDBBlockContent>
             <div className="text-sm text-muted-foreground space-y-3">
-              <div className="p-3 border rounded-lg bg-blue-50/50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
-                <p className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+              <div className="p-3 border rounded-lg bg-primary/5 border-primary/10">
+                <p className="font-semibold mb-2">
                   CBDB Desktop & Web 2025.0520.0.1.0
                 </p>
                 <div className="text-xs space-y-1 mt-3">
@@ -126,18 +126,56 @@ const AboutPage: React.FC = () => {
           </CBDBBlockHeader>
           <CBDBBlockContent>
             <div className="text-sm text-muted-foreground space-y-3">
-              <div className="p-3 border rounded-lg">
-                <p className="font-medium mb-2">CBDB Data Licensing</p>
-                <p className="text-xs">
-                  The China Biographical Database data is licensed under{' '}
-                  <strong>
-                    Attribution-NonCommercial-ShareAlike 4.0 International (CC
-                    BY-NC-SA 4.0)
-                  </strong>
-                  .
-                </p>
+              <div className="p-3 border rounded-lg bg-green-50/50 dark:bg-green-900/10 border-green-200 dark:border-green-800">
+                <p className="font-semibold mb-2">CBDB Project Licensing</p>
+
+                {/* CBDB Data Licensing */}
+                <div className="p-2 bg-green-50/50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 rounded">
+                  <p className="text-xs font-semibold mb-1">
+                    CBDB Data Licensing
+                  </p>
+                  <p className="text-xs">
+                    The China Biographical Database data is licensed under{' '}
+                    <strong>
+                      Attribution-NonCommercial-ShareAlike 4.0 International (CC
+                      BY-NC-SA 4.0)
+                    </strong>
+                    .
+                  </p>
+                </div>
+
+                {/* Database Schema Copyright Notice */}
+                <div className="mt-3 p-2 bg-yellow-50/50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded">
+                  <p className="text-xs font-semibold mb-1">
+                    CBDB Database Schema Copyright
+                  </p>
+                  <p className="text-xs">
+                    The CBDB database schema structure remains under additional copyright protection.
+                  </p>
+                </div>
+
+                {/* Commercial License Notice */}
+                <div className="mt-3 p-2 bg-orange-50/50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-800 rounded">
+                  <p className="text-xs font-semibold mb-1">
+                    Commercial Use in China
+                  </p>
+                  <p className="text-xs">
+                    An exclusive commercial license for CBDB in mainland China is in place (granted to ChineseAll.com since 2018).
+                    Learn more at{' '}
+                    <a
+                      className="underline text-primary hover:text-primary/80"
+                      href="https://projects.iq.harvard.edu/cbdb/exclusive-commercial-license"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      https://projects.iq.harvard.edu/cbdb/exclusive-commercial-license
+                    </a>
+                    .
+                  </p>
+                </div>
+
                 <p className="text-xs mt-2">
-                  For more, please refer to{' '}
+                  For more information, please refer to{' '}
                   <a
                     className="underline text-primary hover:text-primary/80"
                     href="https://projects.iq.harvard.edu/cbdb"
@@ -150,8 +188,8 @@ const AboutPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="p-3 border rounded-lg bg-amber-50/50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800">
-                <p className="font-medium text-amber-900 dark:text-amber-100 mb-2">
+              <div className="p-3 border rounded-lg bg-primary/5 border-primary/10">
+                <p className="font-semibold mb-2">
                   CBDB Desktop & Web Licensing
                 </p>
                 <p className="text-xs">
@@ -171,20 +209,24 @@ const AboutPage: React.FC = () => {
                 </p>
                 <p className="text-xs mt-2">
                   This covers the software, user interface, analytical tools,
-                  and infrastructure provided by this project. The CBDB data
-                  itself remains under its separate licensing terms as described
-                  above.
+                  and infrastructure provided by this project.
                 </p>
                 <p className="text-xs mt-2">
-                  Source code available at:{' '}
+                  <strong>Source code available at:</strong>{' '}
                   <a
                     className="underline text-primary hover:text-primary/80"
-                    href="https://github.com/your-repo/cbdb-desktop"
+                    href="https://github.com/boan-anbo/cbdb-web"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    GitHub repository
+                    https://github.com/boan-anbo/cbdb-web
                   </a>
+                </p>
+                <p className="text-xs mt-2">
+                  While CBDB Desktop & Web's data modeling and software are AGPL-3.0,
+                  the CBDB data itself remains under its separate licensing terms,
+                  and the data schema of the original CBDB database is additionally
+                  copyrighted and cannot be re-copyrighted (see above).
                 </p>
               </div>
             </div>
