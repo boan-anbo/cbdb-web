@@ -112,12 +112,12 @@ export class PersonService {
    * Uses PersonSearchQuery from CQRS pattern
    */
   async searchByName(query: PersonSearchQuery): Promise<PersonSearchResult> {
-    const { offset = '0', limit = '100', name = '', accurate } = query;
+    const { offset = '0', limit = 100, name = '', accurate } = query;
 
     // Defensive checks (in case DTO validation is bypassed)
     const startNum = Math.max(0, parseInt(offset, 10) || 0);
     const limitNum = Math.min(
-      parseInt(limit, 10) || PAGINATION_DEFAULTS.DEFAULT_LIMIT,
+      limit || PAGINATION_DEFAULTS.DEFAULT_LIMIT,
       PAGINATION_DEFAULTS.MAX_LIMIT
     );
 
@@ -219,7 +219,7 @@ export class PersonService {
     } = query;
     const startNum = Math.max(0, parseInt(start, 10) || 0);
     const limitNum = Math.min(
-      parseInt(limit, 10) || PAGINATION_DEFAULTS.DEFAULT_LIMIT,
+      parseInt(limit || '100', 10) || PAGINATION_DEFAULTS.DEFAULT_LIMIT,
       PAGINATION_DEFAULTS.MAX_LIMIT
     );
     const dynastyNum = dynastyCode ? parseInt(dynastyCode, 10) : undefined;

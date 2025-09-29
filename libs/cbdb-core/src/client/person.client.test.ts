@@ -263,7 +263,7 @@ describe('PersonClient', () => {
         yearFrom: "1000",
         yearTo: "1100",
         gender: 'male',
-        limit: "10",
+        limit: 10,
         offset: "0"
       };
 

@@ -170,7 +170,7 @@ describe('PersonClient Endpoints', () => {
         dynastyCode: "15",
         yearFrom: "1000",
         yearTo: "1100",
-        limit: "10"
+        limit: 10
       });
 
       expect(response).toBeDefined();

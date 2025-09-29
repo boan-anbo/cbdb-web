@@ -58,10 +58,10 @@ export class PersonSearchQuery {
   offset?: string;
 
   @IsOptional()
-  @IsNumberString()
+  @IsNumber()
   @Min(1)
   @Max(1000)  // Max 1000 records per request
-  limit?: string;
+  limit?: number;
 
   @IsOptional()
   @IsNumberString()
@@ -101,13 +101,10 @@ export class PersonListQuery {
 
   @IsOptional()
   @IsNumberString()
-  @Min(0)
   start?: string;  // offset
 
   @IsOptional()
   @IsNumberString()
-  @Min(1)
-  @Max(1000)  // Max 1000 records per request
   limit?: string;
 
   @IsOptional()
